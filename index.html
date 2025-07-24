@@ -14,6 +14,9 @@
             --light: #f8f9fa;
             --card-bg: rgba(255, 255, 255, 0.92);
             --sidebar-width: 280px;
+            --gold: #fff9c4;
+            --silver: #f5f5f5;
+            --bronze: #ffecb3;
         }
         
         * {
@@ -435,90 +438,146 @@
             color: var(--secondary);
         }
         
-        .status-cards {
-            display: grid;
-            grid-template-columns: repeat(3, 1fr);
-            gap: 1.2rem;
-            margin-bottom: 1.5rem;
+        /* Слайдер для выбора количества раундов */
+        .rounds-slider {
+            width: 100%;
+            margin: 1.5rem 0;
+            background: linear-gradient(to right, var(--primary), var(--secondary));
+            height: 8px;
+            border-radius: 4px;
+            outline: none;
+            -webkit-appearance: none;
         }
         
-        .status-card {
-            background: linear-gradient(135deg, rgba(0, 201, 183, 0.1), rgba(0, 136, 169, 0.1));
-            border-radius: 12px;
-            padding: 1.5rem;
-            text-align: center;
+        .rounds-slider::-webkit-slider-thumb {
+            -webkit-appearance: none;
+            width: 25px;
+            height: 25px;
+            border-radius: 50%;
+            background: white;
+            border: 3px solid var(--primary);
             cursor: pointer;
             transition: all 0.3s ease;
-            border: 2px solid transparent;
         }
         
-        .status-card:hover {
-            transform: translateY(-5px);
-            box-shadow: 0 10px 20px rgba(0, 136, 169, 0.15);
+        .rounds-slider::-webkit-slider-thumb:hover {
+            transform: scale(1.2);
+            box-shadow: 0 0 10px rgba(0, 201, 183, 0.8);
         }
         
-        .status-card.selected {
-            border-color: var(--primary);
-            background: linear-gradient(135deg, rgba(0, 201, 183, 0.2), rgba(0, 136, 169, 0.2));
-            box-shadow: 0 5px 15px rgba(0, 136, 169, 0.2);
-        }
-        
-        .status-card h3 {
-            color: var(--secondary);
-            margin-bottom: 0.5rem;
-            font-size: 1.2rem;
-        }
-        
-        .status-card p {
-            color: var(--dark);
-            font-size: 0.9rem;
-            opacity: 0.8;
-        }
-        
-        .game-inputs {
-            display: grid;
-            grid-template-columns: repeat(5, 1fr);
-            gap: 1rem;
-            margin-bottom: 1.5rem;
-        }
-        
-        .game-input {
-            display: flex;
-            flex-direction: column;
-            background: rgba(0, 201, 183, 0.08);
-            border-radius: 12px;
-            padding: 1rem;
-            transition: all 0.3s ease;
-        }
-        
-        .game-input:hover {
-            transform: translateY(-3px);
-            box-shadow: 0 5px 15px rgba(0, 136, 169, 0.1);
-        }
-        
-        .game-input label {
+        .rounds-label {
             text-align: center;
-            font-size: 1rem;
-            margin-bottom: 0.8rem;
+            margin: 10px 0 20px;
+            font-size: 1.1rem;
             color: var(--secondary);
             font-weight: 600;
         }
         
-        .game-input input {
-            padding: 0.8rem;
+        /* Контейнер для ввода данных по раундам */
+        .rounds-container {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
+            gap: 1rem;
+            margin-bottom: 1.5rem;
+        }
+        
+        .round-input {
+            background: rgba(0, 201, 183, 0.08);
+            border-radius: 12px;
+            padding: 1.2rem;
+            transition: all 0.3s ease;
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .round-input:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 5px 15px rgba(0, 136, 169, 0.1);
+        }
+        
+        .round-header {
             text-align: center;
-            font-size: 1.1rem;
-            font-weight: bold;
+            font-weight: 600;
+            margin-bottom: 1rem;
+            color: var(--secondary);
+            border-bottom: 2px solid rgba(0, 136, 169, 0.2);
+            padding-bottom: 0.5rem;
+        }
+        
+        .input-row {
+            display: flex;
+            flex-direction: column;
+            margin-bottom: 0.8rem;
+        }
+        
+        .input-row label {
+            margin-bottom: 0.4rem;
+            font-size: 0.95rem;
+            color: #555;
+        }
+        
+        .input-row select, .input-row input {
+            padding: 0.6rem;
             border: 2px solid #e0e0e0;
             border-radius: 8px;
             background: white;
             transition: all 0.3s ease;
+            font-size: 1rem;
         }
         
-        .game-input input:focus {
+        .input-row select:focus, .input-row input:focus {
             border-color: var(--primary);
             box-shadow: 0 0 0 3px rgba(0, 201, 183, 0.3);
             outline: none;
+        }
+        
+        /* Визуализация пятиугольника */
+        .radar-container {
+            display: flex;
+            justify-content: center;
+            margin: 2rem 0;
+            position: relative;
+        }
+        
+        .radar-chart {
+            width: 400px;
+            height: 400px;
+            position: relative;
+        }
+        
+        .radar-canvas {
+            width: 100%;
+            height: 100%;
+        }
+        
+        .radar-legend {
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+            margin-top: 20px;
+            background: rgba(255, 255, 255, 0.8);
+            padding: 15px;
+            border-radius: 10px;
+            max-width: 400px;
+            margin: 20px auto 0;
+        }
+        
+        .legend-item {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+        
+        .legend-number {
+            width: 30px;
+            height: 30px;
+            border-radius: 50%;
+            background: var(--primary);
+            color: white;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: bold;
         }
         
         .calculate-btn {
@@ -568,43 +627,9 @@
             font-weight: 700;
         }
         
-        .result-percentage {
-            font-size: 3.5rem;
-            font-weight: 800;
-            text-align: center;
-            margin: 1rem 0;
-            background: linear-gradient(90deg, var(--primary), #00f2fe);
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
-        }
-        
-        .trend-text {
-            text-align: center;
-            font-size: 1.3rem;
-            font-weight: 600;
-            margin-bottom: 1.5rem;
-        }
-        
-        .progress-container {
-            width: 100%;
-            height: 28px;
-            background: #e9ecef;
-            border-radius: 14px;
-            margin: 2rem 0;
-            overflow: hidden;
-        }
-        
-        .progress-bar {
-            height: 100%;
-            background: linear-gradient(90deg, var(--primary), var(--secondary));
-            border-radius: 14px;
-            transition: width 0.5s ease;
-            width: 0%;
-        }
-        
         .stats-container {
             display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
             gap: 1.5rem;
             margin: 2rem 0;
         }
@@ -629,55 +654,215 @@
             color: var(--dark);
         }
         
-        .feedback {
-            background: rgba(255, 255, 255, 0.7);
-            border-radius: 16px;
-            padding: 1.8rem;
-            margin-top: 2rem;
-            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.05);
-            border-left: 5px solid var(--primary);
-        }
-        
-        .feedback h3 {
-            color: var(--secondary);
-            margin-bottom: 1rem;
+        /* Summer Debate League */
+        .tabs {
             display: flex;
-            align-items: center;
             gap: 10px;
+            margin-bottom: 20px;
         }
         
-        .feedback p {
-            line-height: 1.8;
-            font-size: 1.1rem;
+        .tab-btn {
+            padding: 10px 20px;
+            background: rgba(0, 201, 183, 0.1);
+            border: 2px solid var(--primary);
+            border-radius: 8px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
         }
         
-        .trend-up {
-            color: #27ae60;
+        .tab-btn.active {
+            background: var(--primary);
+            color: white;
         }
         
-        .trend-down {
-            color: #e74c3c;
-        }
-        
-        .trend-neutral {
-            color: #7f8c8d;
-        }
-        
-        .fun-fact {
-            background: linear-gradient(135deg, rgba(46, 204, 113, 0.15), rgba(39, 174, 96, 0.15));
-            border-radius: 16px;
-            padding: 1.5rem;
-            margin: 2rem 0;
+        .tab-content {
             display: none;
-            border-left: 5px solid #27ae60;
         }
         
-        .fun-fact h3 {
-            color: #27ae60;
-            margin-bottom: 0.8rem;
+        .tab-content.active {
+            display: block;
+        }
+        
+        .round-card {
+            background: var(--card-bg);
+            border-radius: 16px;
+            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.1);
+            padding: 1.5rem;
+            margin-bottom: 1.5rem;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+        
+        .round-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 15px 30px rgba(0, 0, 0, 0.15);
+        }
+        
+        .round-card-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 1rem;
+        }
+        
+        .round-number {
+            font-size: 1.3rem;
+            font-weight: 700;
+            color: var(--secondary);
+        }
+        
+        .round-date {
+            color: #666;
+            font-size: 1rem;
+        }
+        
+        .round-details {
+            display: none;
+            margin-top: 1.5rem;
+            padding-top: 1.5rem;
+            border-top: 1px solid #eee;
+        }
+        
+        .resolution-info {
+            margin-bottom: 1.5rem;
+            padding: 1rem;
+            background: rgba(0, 201, 183, 0.05);
+            border-radius: 8px;
+        }
+        
+        .judge-info {
             display: flex;
             align-items: center;
             gap: 10px;
+            margin-bottom: 1.5rem;
+        }
+        
+        .teams-container {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 1.5rem;
+        }
+        
+        @media (max-width: 768px) {
+            .teams-container {
+                grid-template-columns: 1fr;
+            }
+        }
+        
+        .team-card {
+            background: rgba(0, 201, 183, 0.05);
+            border-radius: 12px;
+            padding: 1.2rem;
+        }
+        
+        .team-title {
+            font-weight: 700;
+            margin-bottom: 1rem;
+            color: var(--secondary);
+            border-bottom: 1px solid #eee;
+            padding-bottom: 0.5rem;
+        }
+        
+        .speaker-item {
+            display: flex;
+            justify-content: space-between;
+            padding: 0.5rem 0;
+            border-bottom: 1px solid #f0f0f0;
+        }
+        
+        .rating-table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 1.5rem;
+            background: white;
+            border-radius: 10px;
+            overflow: hidden;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.05);
+        }
+        
+        .rating-table th {
+            background: rgba(0, 201, 183, 0.1);
+            padding: 12px 15px;
+            text-align: left;
+            font-weight: 600;
+        }
+        
+        .rating-table td {
+            padding: 12px 15px;
+            border-bottom: 1px solid #eee;
+        }
+        
+        .rating-table tr:nth-child(even) {
+            background: rgba(0, 0, 0, 0.02);
+        }
+        
+        .rating-table tr:hover {
+            background: rgba(0, 201, 183, 0.05);
+        }
+        
+        .position-1 {
+            background: var(--gold) !important;
+            font-weight: 700;
+        }
+        
+        .position-2 {
+            background: var(--silver) !important;
+            font-weight: 700;
+        }
+        
+        .position-3 {
+            background: var(--bronze) !important;
+            font-weight: 700;
+        }
+        
+        .novice-badge {
+            display: inline-block;
+            width: 10px;
+            height: 10px;
+            border-radius: 50%;
+            background: #2ecc71;
+            margin-left: 8px;
+            box-shadow: 0 0 8px #2ecc71;
+        }
+        
+        .pagination {
+            display: flex;
+            justify-content: center;
+            gap: 10px;
+            margin-top: 2rem;
+        }
+        
+        .page-btn {
+            padding: 8px 15px;
+            background: rgba(0, 201, 183, 0.1);
+            border: 1px solid var(--primary);
+            border-radius: 6px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+        
+        .page-btn.active {
+            background: var(--primary);
+            color: white;
+        }
+        
+        .page-btn:hover:not(.active) {
+            background: rgba(0, 201, 183, 0.2);
+        }
+        
+        .info-button {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            width: 24px;
+            height: 24px;
+            border-radius: 50%;
+            background: var(--primary);
+            color: white;
+            margin-left: 10px;
+            cursor: pointer;
+            font-size: 0.8rem;
         }
         
         /* Адаптация для мобильных */
@@ -695,12 +880,13 @@
                 padding-left: calc(var(--sidebar-width) + 1rem);
             }
             
-            .status-cards {
-                grid-template-columns: 1fr;
+            .rounds-container {
+                grid-template-columns: repeat(2, 1fr);
             }
             
-            .game-inputs {
-                grid-template-columns: repeat(3, 1fr);
+            .radar-chart {
+                width: 350px;
+                height: 350px;
             }
         }
         
@@ -737,14 +923,20 @@
                 grid-template-columns: 1fr;
             }
             
-            .game-inputs {
-                grid-template-columns: repeat(2, 1fr);
+            .rounds-container {
+                grid-template-columns: 1fr;
+            }
+            
+            .radar-chart {
+                width: 300px;
+                height: 300px;
             }
         }
         
         @media (max-width: 480px) {
-            .game-inputs {
-                grid-template-columns: 1fr;
+            .radar-chart {
+                width: 250px;
+                height: 250px;
             }
         }
     </style>
@@ -753,18 +945,7 @@
     <!-- Боковое меню -->
     <div class="sidebar" id="sidebar">
         <div class="sidebar-header">
-            <div class="sidebar-title">NoviceDebate
-
-
-
-
-
-
-
-
-
-
-            </div>
+            <div class="sidebar-title">NoviceDebate</div>
             <button class="close-menu" id="close-menu">
                 <i class="fas fa-times"></i>
             </button>
@@ -781,6 +962,9 @@
                 </a>
                 <a href="#" class="menu-item" data-section="materials">
                     <i class="fas fa-book"></i> Материалы и лекции
+                </a>
+                <a href="#" class="menu-item" data-section="summer-league">
+                    <i class="fas fa-trophy"></i> Summer Debate League
                 </a>
                 <a href="#" class="menu-item" data-section="help">
                     <i class="fas fa-question-circle"></i> Помощь
@@ -802,72 +986,12 @@
                 <h2 class="section-title"><i class="fas fa-user-graduate"></i> Анализ дебатного прогресса</h2>
                 
                 <div class="form-group">
-                    <label><i class="fas fa-user-tag"></i> Ваш статус</label>
-                    <div class="status-cards">
-                        <div class="status-card selected" data-status="novice" onclick="selectStatus(this)">
-                            <h3>Новичок</h3>
-                            <p>Недавно начал играть</p>
-                        </div>
-                        <div class="status-card" data-status="second" onclick="selectStatus(this)">
-                            <h3>Втораш</h3>
-                            <p>Второй год в дебатах</p>
-                        </div>
-                        <div class="status-card" data-status="veteran" onclick="selectStatus(this)">
-                            <h3>Старик</h3>
-                            <p>3+ лет в дебатах</p>
-                        </div>
-                    </div>
-                </div>
-                
-                <div class="form-group">
-                    <label><i class="fas fa-chess-king"></i> Ранги за последние 5 игр (1-4)</label>
-                    <div class="game-inputs">
-                        <div class="game-input">
-                            <label>Раунд 1</label>
-                            <input type="number" class="rank-input" min="1" max="4" step="1" value="3">
-                        </div>
-                        <div class="game-input">
-                            <label>Раунд 2</label>
-                            <input type="number" class="rank-input" min="1" max="4" step="1" value="2">
-                        </div>
-                        <div class="game-input">
-                            <label>Раунд 3</label>
-                            <input type="number" class="rank-input" min="1" max="4" step="1" value="4">
-                        </div>
-                        <div class="game-input">
-                            <label>Раунд 4</label>
-                            <input type="number" class="rank-input" min="1" max="4" step="1" value="3">
-                        </div>
-                        <div class="game-input">
-                            <label>Раунд 5</label>
-                            <input type="number" class="rank-input" min="1" max="4" step="1" value="1">
-                        </div>
-                    </div>
-                </div>
-                
-                <div class="form-group">
-                    <label><i class="fas fa-microphone-alt"></i> Спикерские баллы за последние 5 игр (50-100)</label>
-                    <div class="game-inputs">
-                        <div class="game-input">
-                            <label>Раунд 1</label>
-                            <input type="number" class="speaker-input" min="50" max="100" step="1" value="75">
-                        </div>
-                        <div class="game-input">
-                            <label>Раунд 2</label>
-                            <input type="number" class="speaker-input" min="50" max="100" step="1" value="82">
-                        </div>
-                        <div class="game-input">
-                            <label>Раунд 3</label>
-                            <input type="number" class="speaker-input" min="50" max="100" step="1" value="68">
-                        </div>
-                        <div class="game-input">
-                            <label>Раунд 4</label>
-                            <input type="number" class="speaker-input" min="50" max="100" step="1" value="71">
-                        </div>
-                        <div class="game-input">
-                            <label>Раунд 5</label>
-                            <input type="number" class="speaker-input" min="50" max="100" step="1" value="89">
-                        </div>
+                    <label><i class="fas fa-sliders-h"></i> Количество раундов (1-10)</label>
+                    <input type="range" min="1" max="10" value="5" class="rounds-slider" id="rounds-slider">
+                    <div class="rounds-label">Выбрано: <span id="rounds-count">5</span> раундов</div>
+                    
+                    <div class="rounds-container" id="rounds-container">
+                        <!-- Раунды будут генерироваться здесь -->
                     </div>
                 </div>
                 
@@ -875,41 +999,42 @@
                     <i class="fas fa-calculator"></i> Анализировать прогресс
                 </button>
                 
-                <div class="fun-fact" id="fun-fact">
-                    <h3><i class="fas fa-star"></i> Интересный факт</h3>
-                    <p id="fact-text"></p>
-                </div>
-                
                 <div class="result" id="result">
                     <div class="result-header">
                         <div class="result-title">Результаты анализа</div>
-                        <div id="trend-text" class="trend-text">Ваш прогресс стабилен</div>
                     </div>
                     
-                    <div class="result-percentage" id="percentage">0%</div>
+                    <div class="radar-container">
+                        <div class="radar-chart">
+                            <canvas id="radar-canvas" class="radar-canvas"></canvas>
+                        </div>
+                    </div>
                     
-                    <div class="progress-container">
-                        <div class="progress-bar" id="progress-bar"></div>
+                    <div class="radar-legend" id="radar-legend">
+                        <!-- Легенда будет сгенерирована здесь -->
                     </div>
                     
                     <div class="stats-container">
                         <div class="stat-card">
-                            <h3>Средние спикерские</h3>
-                            <div class="stat-value" id="avg-speaker">0</div>
+                            <h3>Командная связь</h3>
+                            <div class="stat-value" id="team-score">0%</div>
                         </div>
                         <div class="stat-card">
-                            <h3>Баллы за раунды</h3>
-                            <div class="stat-value" id="rank-points">0</div>
+                            <h3>Индивидуальное мастерство</h3>
+                            <div class="stat-value" id="individual-score">0%</div>
                         </div>
                         <div class="stat-card">
-                            <h3>Уровень прогресса</h3>
-                            <div class="stat-value" id="progress-level">-</div>
+                            <h3>Стабильность</h3>
+                            <div class="stat-value" id="stability-score">0%</div>
                         </div>
-                    </div>
-                    
-                    <div class="feedback">
-                        <h3><i class="fas fa-comment-alt"></i> Анализ вашего прогресса</h3>
-                        <p id="detailed-feedback">На основе вашего статуса и последних результатов, ваш прогресс...</p>
+                        <div class="stat-card">
+                            <h3>Правительство</h3>
+                            <div class="stat-value" id="gov-score">0%</div>
+                        </div>
+                        <div class="stat-card">
+                            <h3>Оппозиция</h3>
+                            <div class="stat-value" id="opp-score">0%</div>
+                        </div>
                     </div>
                 </div>
             </div>
@@ -1079,7 +1204,7 @@
                         <p>Как структурированно строить речь, чтобы каждый судья вас понял?.</p>
                     </div>
                     <div class="card-footer">
-                        <!-- ВСТАВЬТЕ ССЫЛКУ ВМЕСТО # -->
+                        <!-- ВСТАВЬТЕ ССЫЛКУ ВМесто # -->
                         <a href="https://docs.google.com/document/d/1KH-YwsV_OtestmsSb25U8irGTnaSmm2I_cI5_7gWROA/edit?tab=t.0" class="card-btn btn-primary">
                             <i class="fas fa-external-link-alt"></i> Читать
                         </a>
@@ -1188,6 +1313,50 @@
             </div>
         </div>
         
+        <!-- Summer Debate League -->
+        <div class="section" id="summer-league">
+            <div class="tabs">
+                <button class="tab-btn active" data-tab="rounds">Раунды</button>
+                <button class="tab-btn" data-tab="rating">Рейтинг</button>
+            </div>
+            
+            <div class="tab-content active" id="rounds-tab">
+                <h2 style="font-size: 2rem; color: white; margin-bottom: 1.5rem;">
+                    <i class="fas fa-calendar-alt"></i> Раунды Summer Debate League
+                </h2>
+                
+                <div id="rounds-list">
+                    <!-- Раунды будут добавлены сюда -->
+                </div>
+            </div>
+            
+            <div class="tab-content" id="rating-tab">
+                <h2 style="font-size: 2rem; color: white; margin-bottom: 1.5rem;">
+                    <i class="fas fa-chart-line"></i> Рейтинг участников
+                </h2>
+                
+                <div id="rating-container">
+                    <table class="rating-table">
+                        <thead>
+                            <tr>
+                                <th>Место</th>
+                                <th>Участник</th>
+                                <th>ELO</th>
+                                <th>Статус</th>
+                            </tr>
+                        </thead>
+                        <tbody id="rating-body">
+                            <!-- Рейтинг будет добавлен сюда -->
+                        </tbody>
+                    </table>
+                    
+                    <div class="pagination" id="pagination">
+                        <!-- Пагинация будет добавлена сюда -->
+                    </div>
+                </div>
+            </div>
+        </div>
+        
         <!-- Секция помощи -->
         <div class="section" id="help">
             <div class="card">
@@ -1232,6 +1401,21 @@
                     <li>Следуйте инструкции по регистрации на раунд</li>
                     <li>Получайте удовольствие и тренируйтесь!<3</li>
                 </ol>
+            </div>
+        </div>
+    </div>
+    
+    <!-- Модальное окно для инфослайда -->
+    <div class="modal" id="infoslide-modal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h3 class="modal-title">Инфослайд</h3>
+                <button class="close-modal" id="close-infoslide">
+                    <i class="fas fa-times"></i>
+                </button>
+            </div>
+            <div class="modal-body" id="infoslide-content">
+                <!-- Контент инфослайда будет добавлен сюда -->
             </div>
         </div>
     </div>
@@ -1300,10 +1484,21 @@
         modal.style.display = 'none';
     });
     
-    // Закрытие модального окна при клике вне его
+    // Модальное окно для инфослайда
+    const infoslideModal = document.getElementById('infoslide-modal');
+    const closeInfoslide = document.getElementById('close-infoslide');
+    
+    closeInfoslide.addEventListener('click', () => {
+        infoslideModal.style.display = 'none';
+    });
+    
+    // Закрытие модальных окон при клике вне их
     window.addEventListener('click', (e) => {
         if (e.target === modal) {
             modal.style.display = 'none';
+        }
+        if (e.target === infoslideModal) {
+            infoslideModal.style.display = 'none';
         }
     });
     
@@ -1316,253 +1511,563 @@
         }
     });
     
-    // Анализ дебатного прогресса
-    let currentStatus = 'novice';
-    let finalPercentage = 0;
+    // Слайдер для выбора количества раундов
+    const roundsSlider = document.getElementById('rounds-slider');
+    const roundsCount = document.getElementById('rounds-count');
+    const roundsContainer = document.getElementById('rounds-container');
     
-    function selectStatus(element) {
-        document.querySelectorAll('.status-card').forEach(card => {
-            card.classList.remove('selected');
+    // Генерация полей ввода для раундов
+    function generateRoundInputs(numRounds) {
+        roundsContainer.innerHTML = '';
+        
+        for (let i = 1; i <= numRounds; i++) {
+            const roundInput = document.createElement('div');
+            roundInput.className = 'round-input';
+            roundInput.innerHTML = `
+                <div class="round-header">Раунд ${i}</div>
+                <div class="input-row">
+                    <label>Позиция</label>
+                    <select class="position-input">
+                        <option value="OP">ОП</option>
+                        <option value="OO">ОО</option>
+                        <option value="ZP">ЗП</option>
+                        <option value="ZO">ЗО</option>
+                    </select>
+                </div>
+                <div class="input-row">
+                    <label>Ранг (1-4)</label>
+                    <input type="number" class="rank-input" min="1" max="4" step="1" value="${Math.min(4, Math.max(1, Math.floor(Math.random() * 4) + 1))}">
+                </div>
+                <div class="input-row">
+                    <label>Спикерские (50-100)</label>
+                    <input type="number" class="speaker-input" min="50" max="100" step="1" value="${Math.floor(Math.random() * 21) + 75}">
+                </div>
+            `;
+            roundsContainer.appendChild(roundInput);
+        }
+    }
+    
+    // Обновление количества раундов
+    roundsSlider.addEventListener('input', function() {
+        const numRounds = parseInt(this.value);
+        roundsCount.textContent = numRounds;
+        generateRoundInputs(numRounds);
+    });
+    
+    // Инициализация полей ввода для раундов
+    generateRoundInputs(5);
+    
+    // Отрисовка пятиугольника (радар-чарта)
+    function drawRadarChart(scores) {
+        const canvas = document.getElementById('radar-canvas');
+        const ctx = canvas.getContext('2d');
+        const centerX = canvas.width / 2;
+        const centerY = canvas.height / 2;
+        const radius = Math.min(centerX, centerY) * 0.8;
+        
+        // Очистка холста
+        ctx.clearRect(0, 0, canvas.width, canvas.height);
+        
+        // Настройка стилей
+        ctx.strokeStyle = 'rgba(0, 136, 169, 0.3)';
+        ctx.fillStyle = 'rgba(0, 201, 183, 0.2)';
+        ctx.lineWidth = 2;
+        ctx.font = 'bold 14px Arial';
+        ctx.textAlign = 'center';
+        ctx.textBaseline = 'middle';
+        
+        // Рисуем сетку
+        const gridSteps = 4;
+        for (let i = 0; i < gridSteps; i++) {
+            const gridRadius = radius * (i + 1) / gridSteps;
+            ctx.beginPath();
+            
+            for (let j = 0; j < 5; j++) {
+                const angle = (Math.PI * 2 * j / 5) - (Math.PI / 2);
+                const x = centerX + gridRadius * Math.cos(angle);
+                const y = centerY + gridRadius * Math.sin(angle);
+                
+                if (j === 0) {
+                    ctx.moveTo(x, y);
+                } else {
+                    ctx.lineTo(x, y);
+                }
+            }
+            
+            ctx.closePath();
+            ctx.stroke();
+        }
+        
+        // Рисуем линии осей
+        ctx.strokeStyle = 'rgba(0, 136, 169, 0.5)';
+        for (let i = 0; i < 5; i++) {
+            const angle = (Math.PI * 2 * i / 5) - (Math.PI / 2);
+            ctx.beginPath();
+            ctx.moveTo(centerX, centerY);
+            ctx.lineTo(
+                centerX + radius * Math.cos(angle),
+                centerY + radius * Math.sin(angle)
+            );
+            ctx.stroke();
+        }
+        
+        // Рисуем пятиугольник с данными
+        ctx.beginPath();
+        ctx.fillStyle = 'rgba(0, 201, 183, 0.5)';
+        ctx.strokeStyle = 'rgba(0, 136, 169, 0.8)';
+        ctx.lineWidth = 3;
+        
+        for (let i = 0; i < 5; i++) {
+            const score = scores[i];
+            const angle = (Math.PI * 2 * i / 5) - (Math.PI / 2);
+            const pointRadius = radius * (score / 100);
+            const x = centerX + pointRadius * Math.cos(angle);
+            const y = centerY + pointRadius * Math.sin(angle);
+            
+            if (i === 0) {
+                ctx.moveTo(x, y);
+            } else {
+                ctx.lineTo(x, y);
+            }
+            
+            // Рисуем номера в вершинах
+            ctx.fillStyle = 'rgba(0, 0, 0, 0.8)';
+            ctx.font = 'bold 16px Arial';
+            ctx.fillText((i+1).toString(), x, y);
+        }
+        
+        ctx.closePath();
+        ctx.fill();
+        ctx.stroke();
+        
+        // Добавляем точки на вершины
+        ctx.fillStyle = 'rgba(0, 136, 169, 1)';
+        for (let i = 0; i < 5; i++) {
+            const score = scores[i];
+            const angle = (Math.PI * 2 * i / 5) - (Math.PI / 2);
+            const pointRadius = radius * (score / 100);
+            const x = centerX + pointRadius * Math.cos(angle);
+            const y = centerY + pointRadius * Math.sin(angle);
+            
+            ctx.beginPath();
+            ctx.arc(x, y, 5, 0, Math.PI * 2);
+            ctx.fill();
+            
+            // Отображаем значения
+            ctx.fillStyle = 'rgba(0, 0, 0, 0.8)';
+            ctx.font = 'bold 14px Arial';
+            ctx.fillText(`${Math.round(score)}%`, x, y - 20);
+            ctx.fillStyle = 'rgba(0, 136, 169, 1)';
+        }
+        
+        // Обновляем легенду
+        const legend = document.getElementById('radar-legend');
+        legend.innerHTML = '';
+        
+        const labels = [
+            "1. Командная связь",
+            "2. Индивидуальное мастерство",
+            "3. Стабильность результатов",
+            "4. Правительство",
+            "5. Оппозиция"
+        ];
+        
+        labels.forEach((label, index) => {
+            const legendItem = document.createElement('div');
+            legendItem.className = 'legend-item';
+            legendItem.innerHTML = `
+                <div class="legend-number">${index+1}</div>
+                <div>${label}</div>
+            `;
+            legend.appendChild(legendItem);
+        });
+    }
+    
+    // Расчет показателей для пятиугольника
+    function calculateRadarScores(roundsData) {
+        let teamPoints = 0;
+        let individualPoints = 0;
+        let stability = 0;
+        let govPoints = 0;
+        let oppPoints = 0;
+        let govCount = 0;
+        let oppCount = 0;
+        
+        // Массивы для расчета стабильности
+        const speakerScores = [];
+        const rankScores = [];
+        
+        // Обработка каждого раунда
+        roundsData.forEach(round => {
+            // Преобразование ранга в баллы: 1=3, 2=2, 3=1, 4=0
+            const rankPoints = 4 - parseInt(round.rank);
+            teamPoints += rankPoints;
+            
+            // Спикерские баллы
+            const speaker = parseInt(round.speaker);
+            individualPoints += speaker;
+            speakerScores.push(speaker);
+            rankScores.push(rankPoints);
+            
+            // Определение позиции
+            if (round.position === 'OP' || round.position === 'ZP') {
+                govPoints += rankPoints;
+                govCount++;
+            } else {
+                oppPoints += rankPoints;
+                oppCount++;
+            }
         });
         
-        element.classList.add('selected');
-        currentStatus = element.getAttribute('data-status');
+        // Расчет средних значений
+        const avgTeamPoints = roundsData.length > 0 ? (teamPoints / (roundsData.length * 3)) * 100 : 0;
+        const avgIndividualPoints = roundsData.length > 0 ? ((individualPoints / roundsData.length) - 50) / 35 * 100 : 0;
+        
+        // Расчет стабильности
+        let stabilityScore = 0;
+        if (roundsData.length > 1) {
+            const speakerRange = Math.max(...speakerScores) - Math.min(...speakerScores);
+            const rankRange = Math.max(...rankScores) - Math.min(...rankScores);
+            stabilityScore = 100 - (speakerRange + rankRange * 10) / 2;
+        } else {
+            stabilityScore = 70; // По умолчанию для одного раунда
+        }
+        
+        // Расчет показателей для правительства и оппозиции
+        const govScore = govCount > 0 ? (govPoints / (govCount * 3)) * 100 : 0;
+        const oppScore = oppCount > 0 ? (oppPoints / (oppCount * 3)) * 100 : 0;
+        
+        // Ограничение значений от 0 до 100
+        return [
+            Math.max(0, Math.min(100, avgTeamPoints)),
+            Math.max(0, Math.min(100, avgIndividualPoints)),
+            Math.max(0, Math.min(100, stabilityScore)),
+            Math.max(0, Math.min(100, govScore)),
+            Math.max(0, Math.min(100, oppScore))
+        ];
     }
     
     function calculateProgress() {
-        // Получаем значения из формы
-        const rankInputs = document.querySelectorAll('.rank-input');
-        const speakerInputs = document.querySelectorAll('.speaker-input');
+        // Получаем количество раундов
+        const numRounds = parseInt(roundsSlider.value);
         
-        // Собираем данные по играм
-        const ranks = Array.from(rankInputs).map(input => parseInt(input.value));
-        const speakers = Array.from(speakerInputs).map(input => parseInt(input.value));
+        // Собираем данные по раундам
+        const roundsData = [];
+        const roundInputs = document.querySelectorAll('.round-input');
         
-        // Рассчитываем средние значения
-        const avgSpeaker = speakers.reduce((sum, points) => sum + points, 0) / speakers.length;
-        
-        // Рассчитываем баллы за ранги (1=3, 2=2, 3=1, 4=0)
-        const rankPoints = ranks.map(rank => {
-            if(rank === 1) return 3;
-            if(rank === 2) return 2;
-            if(rank === 3) return 1;
-            return 0;
+        roundInputs.forEach(input => {
+            const position = input.querySelector('.position-input').value;
+            const rank = input.querySelector('.rank-input').value;
+            const speaker = input.querySelector('.speaker-input').value;
+            
+            roundsData.push({
+                position: position,
+                rank: rank,
+                speaker: speaker
+            });
         });
         
-        const totalRankPoints = rankPoints.reduce((sum, points) => sum + points, 0);
+        // Рассчитываем показатели для пятиугольника
+        const radarScores = calculateRadarScores(roundsData);
         
-        // Рассчитываем общий балл прогресса
-        let progressPercentage = 0;
-        let progressLevel = '';
+        // Рисуем пятиугольник
+        drawRadarChart(radarScores);
         
-        // Критерии оценки для каждого статуса
-        if(currentStatus === 'novice') {
-            // Новичок: фокус на спикерских баллах
-            if(avgSpeaker < 66) {
-                progressPercentage = 20;
-                progressLevel = 'Спикер школьной лиги';
-            } else if(avgSpeaker >= 66 && avgSpeaker <= 71) {
-                progressPercentage = 25;
-                progressLevel = 'Новис-новис';
-            } else if(avgSpeaker >= 72 && avgSpeaker <= 75) {
-                progressPercentage = 70;
-                progressLevel = 'Базовый новис';
-            } else {
-                progressPercentage = 90;
-                progressLevel = 'Сильный новис';
-            }
-        } 
-        else if(currentStatus === 'second') {
-            // Втораш: сбалансированная оценка
-            if(avgSpeaker < 75) {
-                progressPercentage = 40;
-                progressLevel = 'Неопытный втораш';
-            } else if(avgSpeaker >= 75 && avgSpeaker <= 77) {
-                progressPercentage = 60;
-                progressLevel = 'Средний втораш';
-            } else if(avgSpeaker >= 78 && avgSpeaker <= 80) {
-                progressPercentage = 75;
-                progressLevel = 'Хороший втораш';
-            } else {
-                progressPercentage = 90;
-                progressLevel = 'Сильный втораш';
-            }
-        }
-        else {
-            // Старик: более высокие требования
-            if(avgSpeaker < 75) {
-                progressPercentage = 20;
-                progressLevel = 'Неопытный старик';
-            } else if(avgSpeaker >= 76 && avgSpeaker <= 79) {
-                progressPercentage = 59;
-                progressLevel = 'Опытный старик';
-            } else if(avgSpeaker >= 80 && avgSpeaker <= 83) {
-                progressPercentage = 90;
-                progressLevel = 'Хороший старик';
-            } else {
-                progressPercentage = 95;
-                progressLevel = 'Мастер дебатов';
-            }
-        }
+        // Обновляем статистику
+        document.getElementById('team-score').textContent = `${Math.round(radarScores[0])}%`;
+        document.getElementById('individual-score').textContent = `${Math.round(radarScores[1])}%`;
+        document.getElementById('stability-score').textContent = `${Math.round(radarScores[2])}%`;
+        document.getElementById('gov-score').textContent = `${Math.round(radarScores[3])}%`;
+        document.getElementById('opp-score').textContent = `${Math.round(radarScores[4])}%`;
         
-        // Корректировка на баллы за раунды
-        const maxRankPoints = 15; // 5 игр * 3 балла
-        const rankPointsPercentage = (totalRankPoints / maxRankPoints) * 25;
-        
-        // Финальный процент прогресса
-        finalPercentage = Math.min(progressPercentage + rankPointsPercentage, 100);
-        
-        // Определяем тренд
-        let trend = 'neutral';
-        let trendText = 'Ваш прогресс стабилен';
-        
-        // Исправленный расчет динамики
-        const firstHalfAvg = (speakers[0] + speakers[1]) / 2;
-        const secondHalfAvg = (speakers[3] + speakers[4]) / 2;
-        const speakerTrend = secondHalfAvg > firstHalfAvg ? 'улучшение' : 
-                            secondHalfAvg < firstHalfAvg ? 'ухудшение' : 'стабильность';
-        
-        if (finalPercentage > 75) {
-            trend = 'up';
-            trendText = 'Отличный рост! Продолжайте в том же духе!';
-        } else if (finalPercentage < 45) {
-            trend = 'down';
-            trendText = 'Есть над чем поработать. Анализируйте свои выступления!';
-        }
-        
-        // Генерация детального фидбэка с передачей progressLevel
-        let feedback = generateFeedback(currentStatus, avgSpeaker, totalRankPoints, ranks, speakers, progressLevel);
-        
-        // Проверка на особые случаи
-        const funFact = document.getElementById('fun-fact');
-        funFact.style.display = 'none';
-        
-        // Специальные упоминания
-        if (currentStatus === 'novice') {
-            if (avgSpeaker >= 76 && avgSpeaker <= 77) {
-                document.getElementById('fact-text').textContent = "🔥 Ты уже очень сильный новис, почти как Майя Аралбаева,которая уничтожала в любом руме!";
-                funFact.style.display = 'block';
-            }
-            else if (avgSpeaker >= 72 && avgSpeaker <= 74) {
-                document.getElementById('fact-text').textContent = "🌟 Ваши результаты напоминают Жумана, который так и не смог стрельнуть, но у вас все впереди!";
-                funFact.style.display = 'block';
-            }
-        } 
-        else if (currentStatus === 'second' && avgSpeaker >= 76 && avgSpeaker <= 78) {
-            document.getElementById('fact-text').textContent = "🚀 Ваши результаты на уровне Батухана Аданбекова, но сможешь ли ты быть таким же стабильным?";
-            funFact.style.display = 'block';
-        }
-        
-        // Показываем результаты
-        document.getElementById('percentage').textContent = `${Math.round(finalPercentage)}%`;
-        document.getElementById('percentage').className = `result-percentage trend-${trend}`;
-        document.getElementById('trend-text').textContent = trendText;
-        document.getElementById('trend-text').className = `trend-text trend-${trend}`;
-        document.getElementById('progress-bar').style.width = `${finalPercentage}%`;
-        document.getElementById('detailed-feedback').innerHTML = feedback;
         document.getElementById('result').style.display = 'block';
-        
-        // Показываем статистику
-        document.getElementById('avg-speaker').textContent = Math.round(avgSpeaker);
-        document.getElementById('rank-points').textContent = totalRankPoints;
-        document.getElementById('progress-level').textContent = progressLevel;
         
         // Плавная прокрутка к результатам
         document.getElementById('result').scrollIntoView({ behavior: 'smooth' });
     }
     
-    function generateFeedback(status, avgSpeaker, totalRankPoints, ranks, speakers, progressLevel) {
-        let feedback = '';
-        const rankDistribution = [0, 0, 0, 0];
-        ranks.forEach(rank => rankDistribution[rank-1]++);
+    // Summer Debate League
+    // Данные для раундов (можно редактировать)
+    const roundsData = [
+        {
+            id: 1,
+            date: "25 июля 2025",
+            time: "20:00 по Казахстану | 21:00 по Кыргызстану | 18:00 по Москве",
+            resolution: "",
+            infoslide: "",
+            judge: "Мирас Онбаев (чеер), Полина (панелист)",
+            teams: {
+                OP: {
+                    speakers: [
+                        { name: "Павел Тихомиров", points: 0 },
+                        { name: "Ескермес Ернур", points: 0 }
+                    ]
+                },
+                OO: {
+                    speakers: [
+                        { name: "Жуманбеков Алишер", points: 0 },
+                        { name: "Жангалиева Ару", points: 0 }
+                    ]
+                },
+                ZP: {
+                    speakers: [
+                        { name: "Орунбаев Эрмек", points: 0 },
+                        { name: "Вегеле Вероника", points: 0 }
+                    ]
+                },
+                ZO: {
+                    speakers: [
+                        { name: "Данила Огай", points: 0 },
+                        { name: "Булекбаев Алихан", points: 0 }
+                    ]
+                }
+            }
+        },
+
+        {
+            id: 2,
+            date: "25 июля 2025",
+            time: "20:00 по Казахстану | 21:00 по Кыргызстану | 18:00 по Москве",
+            resolution: "",
+            infoslide: "",
+            judge: "Аян Марат",
+            teams: {
+                OP: {
+                    speakers: [
+                        { name: "Темирхан Жуман", points: 0 },
+                        { name: "Майя Аралбаева", points: 0 }
+                    ]
+                },
+                OO: {
+                    speakers: [
+                        { name: "Эльшат", points: 0 },
+                        { name: "Ауез", points: 0 }
+                    ]
+                },
+                ZP: {
+                    speakers: [
+                        { name: "Альбар Керимхан", points: 0 },
+                        { name: "Жан Кипр", points: 0 }
+                    ]
+                },
+                ZO: {
+                    speakers: [
+                        { name: "Уласхан Талап", points: 0 },
+                        { name: "Сманова Акбота", points: 0 }
+                    ]
+                }
+            }
+        },
+    ];
+
+
+    
+    // Данные для рейтинга (можно редактировать)
+    const ratingData = [
+        { name: "Майя Аралбаева (Argument)", elo: 0, status: "novice" },
+        { name: "Жуманбеков Алишер (Mangilik)", elo: 0, status: "second" },
+        { name: "Темирхан Жуман (Sirius)", elo: -99, status: "novice" },
+        { name: "Булекбаев Алихан (Argument)", elo: 0, status: "novice" },
+        { name: "Ескермес Ернур", elo: 0, status: "novice" },
+        { name: "Исина Асем (Argument)", elo: 0, status: "novice" },
+        { name: "Вегеле Вероника (Novus)", elo: 0, status: "novice" },
+        { name: "Никита Лободин (InDebate)", elo: 0, status: "second" },
+        { name: "Аданбеков Батухан (DC IITU)", elo: 0, status: "second" },
+        { name: "Уласхан Талап", elo: 0, status: "novice" },
+        { name: "Асетова Аяулым (DC Buketov)", elo: 0, status: "novice" },
+        { name: "Орунбаев Эрмек (Manas)", elo: 0, status: "novice" },
+        { name: "Орынтаева Айлин", elo: 0, status: "novice" },
+        { name: "Туяк Есенжол (Mangilik)", elo: 0, status: "novice" },
+        { name: "Масловский Константин (Argument & Xynta Legacy)", elo: 0, status: "novice" },
+        { name: "Альбар Керимхан (Nomad)", elo: 0, status: "novice" },
+        { name: "Марат Әлихан (Nomad)", elo: 0, status: "second" },
+        { name: "Гарифоллаев Мерей (Parasat)", elo: 0, status: "second" },
+        { name: "Адилет Желеубай (Argument)", elo: 0, status: "second" },
+        { name: "Аян Марат (DC IITU)", elo: 0, status: "novice" },
+        { name: "Сейпиш Нурсултан (DC IITU)", elo: 0, status: "novice" },
+        { name: "Жаппар Абдурахим (Argument)", elo: 0, status: "novice" },
+        { name: "Жан Кипр", elo: 0, status: "second" },
+        { name: "Қадыл Мадияр (DC Akadem)", elo: 0, status: "second" },
+        { name: "Графский Роман", elo: 0, status: "novice" },
+        { name: "Полякова Мария (DC MGU)", elo: 0, status: "novice" },
+        { name: "Ауез (Parasat)", elo: 0, status: "novice" },
+    ];
+    
+    // Генерация списка раундов
+    function generateRoundsList() {
+        const roundsList = document.getElementById('rounds-list');
+        roundsList.innerHTML = '';
         
-        // Анализ динамики
-        const firstHalfAvg = (speakers[0] + speakers[1]) / 2;
-        const secondHalfAvg = (speakers[3] + speakers[4]) / 2;
-        const speakerTrend = secondHalfAvg > firstHalfAvg ? 'улучшение' : 
-                            secondHalfAvg < firstHalfAvg ? 'ухудшение' : 'стабильность';
-        
-        // Определение сильных и слабых сторон
-        const minSpeaker = Math.min(...speakers);
-        const maxSpeaker = Math.max(...speakers);
-        const consistency = (maxSpeaker - minSpeaker) < 10 ? 'высокая' : 
-                           (maxSpeaker - minSpeaker) < 15 ? 'средняя' : 'низкая';
-        
-        // Генерация фидбэка
-        feedback = `<strong>Средние спикерские:</strong> ${Math.round(avgSpeaker)} баллов<br>`;
-        feedback += `<strong>Баллы за раунды:</strong> ${totalRankPoints} из 15 возможных<br>`;
-        feedback += `<strong>Динамика:</strong> ${speakerTrend} результатов во второй половине игр<br>`;
-        feedback += `<strong>Стабильность:</strong> ${consistency} стабильность выступлений<br><br>`;
-        
-        // Анализ и советы
-        feedback += `<strong>Анализ вашего прогресса:</strong><br>`;
-        
-        if (status === 'novice') {
-            feedback += `Как новичок, вы показываете ${progressLevel.includes('сильный') ? 'отличные' : 'хорошие'} результаты. `;
+        roundsData.forEach(round => {
+            const roundCard = document.createElement('div');
+            roundCard.className = 'round-card';
+            roundCard.innerHTML = `
+                <div class="round-card-header">
+                    <div class="round-number">Раунд #${round.id}</div>
+                    <div class="round-date">${round.date} | ${round.time}</div>
+                </div>
+                <div class="card-content">
+                    <p><strong>Резолюция:</strong> ${round.resolution}</p>
+                </div>
+                <div class="round-details" id="details-${round.id}">
+                    <div class="resolution-info">
+                        <p><strong>Резолюция:</strong> ${round.resolution}</p>
+                        <p style="margin-top: 10px;">
+                            <strong>Инфослайд</strong>
+                            ${round.infoslide ? 
+                                `<span class="info-button" onclick="openInfoslide(${round.id})">?</span>` : 
+                                '<span style="margin-left: 10px;">none</span>'
+                            }
+                        </p>
+                    </div>
+                    
+                    <div class="judge-info">
+                        <i class="fas fa-gavel"></i>
+                        <div><strong>Судья:</strong> ${round.judge}</div>
+                    </div>
+                    
+                    <div class="teams-container">
+                        <div class="team-card">
+                            <div class="team-title">ОП (Открывающее правительство)</div>
+                            ${round.teams.OP.speakers.map(speaker => `
+                                <div class="speaker-item">
+                                    <span>${speaker.name}</span>
+                                    <span>${speaker.points} баллов</span>
+                                </div>
+                            `).join('')}
+                        </div>
+                        
+                        <div class="team-card">
+                            <div class="team-title">ОО (Открывающая оппозиция)</div>
+                            ${round.teams.OO.speakers.map(speaker => `
+                                <div class="speaker-item">
+                                    <span>${speaker.name}</span>
+                                    <span>${speaker.points} баллов</span>
+                                </div>
+                            `).join('')}
+                        </div>
+                        
+                        <div class="team-card">
+                            <div class="team-title">ЗП (Закрывающее правительство)</div>
+                            ${round.teams.ZP.speakers.map(speaker => `
+                                <div class="speaker-item">
+                                    <span>${speaker.name}</span>
+                                    <span>${speaker.points} баллов</span>
+                                </div>
+                            `).join('')}
+                        </div>
+                        
+                        <div class="team-card">
+                            <div class="team-title">ЗО (Закрывающая оппозиция)</div>
+                            ${round.teams.ZO.speakers.map(speaker => `
+                                <div class="speaker-item">
+                                    <span>${speaker.name}</span>
+                                    <span>${speaker.points} баллов</span>
+                                </div>
+                            `).join('')}
+                        </div>
+                    </div>
+                </div>
+            `;
             
-            // Советы для новичков
-            feedback += `<br><br>💡 <strong>Советы для улучшения:</strong><br>`;
-            feedback += `- Работайте над основами аргументации<br>`;
-            feedback += `- Практикуйте тайминг речи, всегда правильно распределяй время на речи.<br>`;
-            feedback += `- Анализируйте выступления опытных дебатеров, всегда спрашивайте у них советы.`;
-        } 
-        else if (status === 'second') {
-            feedback += `Для втораша ваши показатели ${progressLevel.includes('сильный') ? 'выше среднего' : 'соответствуют ожиданиям'}. `;
+            // Обработчик клика для раскрытия деталей
+            roundCard.querySelector('.round-card-header').addEventListener('click', function() {
+                const details = roundCard.querySelector('.round-details');
+                details.style.display = details.style.display === 'block' ? 'none' : 'block';
+            });
             
-            // Советы для вторашей
-            feedback += `<br><br>💡 <strong>Советы для улучшения:</strong><br>`;
-            feedback += `- Развивайте стратегическое мышление, пробуйте играть более сложные кейсы, чтобы выиграть<br>`;
-            feedback += `- Улучшайте командное взаимодействие. Проводите созвоны и обсуждайте стратегию.<br>`;
-            feedback += `- Работайте над стабильностью ваших результатов`;
-        }
-        else {
-            feedback += `Как старик, вы демонстрируете ${progressLevel.includes('мастер') ? 'выдающиеся' : 'хорошие'} результаты. `;
-            
-            // Советы для стариков
-            feedback += `<br><br>💡 <strong>Советы для улучшения:</strong><br>`;
-            feedback += `- Экспериментируйте с новыми стратегиями<br>`;
-            feedback += `- Развивайте менторские навыки<br>`;
-            feedback += `- Пополняйте запас знаний при помощи разборов, главное будьте стабильны.`;
-        }
-        
-        // Анализ командных баллов
-        const teamPoints = totalRankPoints;
-        feedback += `<br><br>🎯 <strong>Анализ командных баллов:</strong><br>`;
-        
-        if (teamPoints > 10) {
-            feedback += `Отличные командные результаты! Ваша синергия с партнером на высшем уровне.`;
-        } else if (teamPoints > 7) {
-            feedback += `Хорошие командные результаты. Работайте над улучшением взаимодействия во время турнира, анализируйте ваши ошибки и слабые стороны.`;
-        } else {
-            feedback += `Командные результаты требуют улучшения. Уделите внимание совместной подготовке и распределению ролей до турнира.`;
-        }
-        
-        // Анализ спикерских баллов
-        feedback += `<br><br>🎤 <strong>Анализ спикерских баллов:</strong><br>`;
-        
-        if (avgSpeaker > 80) {
-            feedback += `Превосходные спикерские баллы! У вас очень качественные кейсы и помпезные речи.`;
-        } else if (avgSpeaker > 75) {
-            feedback += `Хорошие спикерские баллы. Работайте над структурой и стратегией перед раундом.`;
-        } else if (avgSpeaker > 70) {
-            feedback += `Средние спикерские баллы. Уделите внимание доказательству ваших тезисов и проработке блоков в вашем кейсе.`;
-        } else {
-            feedback += `Спикерские баллы требуют улучшения. Практикуйте выступления и работайте над уверенностью.`;
-        }
-        
-        // Общие рекомендации
-        feedback += `<br><br>📈 <strong>Общие рекомендации:</strong><br>`;
-        feedback += `- Регулярно анализируйте свои кейсы и выступления<br>`;
-        feedback += `- Изучайте материалы и лекции по дебатам<br>`;
-        feedback += `- Играйте больше практис раундов и подмечайте свои ошибки<br>`;
-        feedback += `- Обсуждайте стратегии со своим тиммейтом или ментором`;
-        
-        return feedback;
+            roundsList.appendChild(roundCard);
+        });
     }
     
-    // Изначально скрываем результаты и выбираем новичка
+    // Открытие инфослайда
+    function openInfoslide(roundId) {
+        const round = roundsData.find(r => r.id === roundId);
+        if (round && round.infoslide) {
+            document.getElementById('infoslide-content').innerHTML = `
+                <h4>Резолюция: ${round.resolution}</h4>
+                <p>${round.infoslide}</p>
+            `;
+            infoslideModal.style.display = 'flex';
+        }
+    }
+    
+    // Генерация рейтинга
+    function generateRating(page = 1, perPage = 10) {
+        const ratingBody = document.getElementById('rating-body');
+        const pagination = document.getElementById('pagination');
+        
+        // Сортируем по ELO
+        const sortedData = [...ratingData].sort((a, b) => b.elo - a.elo);
+        
+        // Рассчитываем пагинацию
+        const totalPages = Math.ceil(sortedData.length / perPage);
+        const startIndex = (page - 1) * perPage;
+        const endIndex = startIndex + perPage;
+        const pageData = sortedData.slice(startIndex, endIndex);
+        
+        // Генерируем таблицу
+        ratingBody.innerHTML = '';
+        pageData.forEach((participant, index) => {
+            const position = startIndex + index + 1;
+            const row = document.createElement('tr');
+            
+            // Определяем класс для позиции
+            let positionClass = '';
+            if (position === 1) positionClass = 'position-1';
+            else if (position === 2) positionClass = 'position-2';
+            else if (position === 3) positionClass = 'position-3';
+            
+            row.className = positionClass;
+            row.innerHTML = `
+                <td>${position}</td>
+                <td>${participant.name} ${participant.status === 'novice' ? '<span class="novice-badge"></span>' : ''}</td>
+                <td>${participant.elo}</td>
+                <td>${participant.status === 'novice' ? 'Новис' : participant.status === 'second' ? 'Втораш' : 'Старик'}</td>
+            `;
+            ratingBody.appendChild(row);
+        });
+        
+        // Генерируем пагинацию
+        pagination.innerHTML = '';
+        for (let i = 1; i <= totalPages; i++) {
+            const button = document.createElement('button');
+            button.className = `page-btn ${i === page ? 'active' : ''}`;
+            button.textContent = i;
+            button.addEventListener('click', () => generateRating(i, perPage));
+            pagination.appendChild(button);
+        }
+    }
+    
+    // Управление табами Summer Debate League
+    document.querySelectorAll('.tab-btn').forEach(btn => {
+        btn.addEventListener('click', function() {
+            const tab = this.getAttribute('data-tab');
+            const tabContentId = tab + '-tab';
+            
+            // Убираем активный класс у всех кнопок и контента
+            document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
+            document.querySelectorAll('.tab-content').forEach(c => c.classList.remove('active'));
+            
+            // Добавляем активный класс текущей кнопке и контенту
+            this.classList.add('active');
+            document.getElementById(tabContentId).classList.add('active');
+        });
+    });
+    
+    // Изначально скрываем результаты
     document.addEventListener('DOMContentLoaded', function() {
-        document.querySelector('[data-status="novice"]').classList.add('selected');
         document.getElementById('result').style.display = 'none';
+        
+        // Инициализация canvas
+        const canvas = document.getElementById('radar-canvas');
+        canvas.width = 400;
+        canvas.height = 400;
+        
+        // Генерация данных для Summer Debate League
+        generateRoundsList();
+        generateRating();
     });
 </script>
+</body>
+</html>
