@@ -7,16 +7,19 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <style>
         :root {
-            --primary: #00c9b7;
-            --secondary: #0088a9;
+            --primary: #9b5de5;
+            --secondary: #7b2cbf;
             --accent: #ff6b6b;
-            --dark: #1a1a2e;
+            --dark: #10002b;
             --light: #f8f9fa;
             --card-bg: rgba(255, 255, 255, 0.92);
             --sidebar-width: 280px;
             --gold: #fff9c4;
             --silver: #f5f5f5;
             --bronze: #ffecb3;
+            --menu-primary: #7b2cbf;
+            --menu-secondary: #5a189a;
+            --menu-accent: #e0aaff;
         }
         
         * {
@@ -27,7 +30,7 @@
         
         body {
             font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-            background: linear-gradient(135deg, #0f2027, #203a43, #2c5364);
+            background: linear-gradient(135deg, #10002b, #240046, #3c096c);
             margin: 0;
             padding: 0;
             min-height: 100vh;
@@ -36,6 +39,87 @@
             overflow-x: hidden;
             position: relative;
         }
+        
+        /* Главное меню */
+        .main-menu {
+            width: 100%;
+            padding: 2rem;
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 2rem;
+            max-width: 1200px;
+            margin: 0 auto;
+            align-self: center;
+            animation: fadeIn 0.8s ease;
+        }
+        
+        .menu-card {
+            background: linear-gradient(135deg, rgba(155, 93, 229, 0.15), rgba(123, 44, 191, 0.2));
+            border-radius: 20px;
+            padding: 2rem;
+            text-align: center;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
+            transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+            border: 1px solid rgba(155, 93, 229, 0.3);
+            backdrop-filter: blur(10px);
+            position: relative;
+            overflow: hidden;
+            cursor: pointer;
+        }
+        
+        .menu-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(135deg, transparent, rgba(224, 170, 255, 0.1));
+            z-index: -1;
+        }
+        
+        .menu-card:hover {
+            transform: translateY(-10px) scale(1.03);
+            box-shadow: 0 15px 40px rgba(155, 93, 229, 0.4);
+        }
+        
+        .menu-icon {
+            width: 80px;
+            height: 80px;
+            border-radius: 50%;
+            background: linear-gradient(135deg, var(--menu-primary), var(--menu-secondary));
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin: 0 auto 1.5rem;
+            font-size: 2.5rem;
+            color: white;
+            transition: all 0.4s ease;
+        }
+        
+        .menu-card:hover .menu-icon {
+            transform: rotate(15deg) scale(1.1);
+        }
+        
+        .menu-title {
+            font-size: 1.8rem;
+            font-weight: 700;
+            color: white;
+            margin-bottom: 1rem;
+            text-shadow: 0 2px 10px rgba(0, 0, 0, 0.2);
+        }
+        
+        .menu-description {
+            color: rgba(255, 255, 255, 0.8);
+            font-size: 1.1rem;
+            line-height: 1.6;
+        }
+        
+        .menu-card:nth-child(1) .menu-icon { background: linear-gradient(135deg, #9b5de5, #7b2cbf); }
+        .menu-card:nth-child(2) .menu-icon { background: linear-gradient(135deg, #4361ee, #3a0ca3); }
+        .menu-card:nth-child(3) .menu-icon { background: linear-gradient(135deg, #f15bb5, #d0007d); }
+        .menu-card:nth-child(4) .menu-icon { background: linear-gradient(135deg, #00bbf9, #0077b6); }
+        .menu-card:nth-child(5) .menu-icon { background: linear-gradient(135deg, #00f5d4, #00a896); }
         
         /* Боковое меню */
         .sidebar {
@@ -117,7 +201,7 @@
         }
         
         .menu-item:hover {
-            background: rgba(0, 201, 183, 0.2);
+            background: rgba(155, 93, 229, 0.2);
             transform: translateX(5px);
         }
         
@@ -156,6 +240,7 @@
         
         .menu-toggle:hover {
             transform: scale(1.1);
+            background: var(--secondary);
         }
         
         /* Основной контент */
@@ -166,10 +251,15 @@
             padding: 2rem;
             padding-left: 5rem;
             transition: all 0.4s ease;
+            display: none;
         }
         
         .container.sidebar-open {
             padding-left: calc(var(--sidebar-width) + 2rem);
+        }
+        
+        .container.active {
+            display: block;
         }
         
         .header {
@@ -180,7 +270,7 @@
         .title {
             font-size: 3rem;
             font-weight: 800;
-            background: linear-gradient(90deg, var(--primary), #00f2fe);
+            background: linear-gradient(90deg, #e0aaff, #9d4edd);
             -webkit-background-clip: text;
             -webkit-text-fill-color: transparent;
             margin-bottom: 0.5rem;
@@ -211,12 +301,12 @@
             position: relative;
             overflow: hidden;
             transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
-            border: 1px solid rgba(255, 255, 255, 0.2);
+            border: 1px solid rgba(155, 93, 229, 0.2);
         }
         
         .card:hover {
             transform: translateY(-10px);
-            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.25);
+            box-shadow: 0 20px 40px rgba(155, 93, 229, 0.25);
         }
         
         .card::before {
@@ -292,14 +382,14 @@
         }
         
         .btn-secondary {
-            background: rgba(0, 201, 183, 0.1);
+            background: rgba(155, 93, 229, 0.1);
             color: var(--secondary);
             border: 2px solid var(--primary);
         }
         
         .card-btn:hover {
             transform: translateY(-3px);
-            box-shadow: 0 5px 15px rgba(0, 136, 169, 0.3);
+            box-shadow: 0 5px 15px rgba(123, 44, 191, 0.3);
         }
         
         /* Секции */
@@ -372,8 +462,8 @@
         
         /* Анимации */
         @keyframes fadeIn {
-            from { opacity: 0; }
-            to { opacity: 1; }
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
         }
         
         @keyframes fadeInUp {
@@ -406,7 +496,7 @@
             padding: 1.8rem;
             position: relative;
             overflow: hidden;
-            border: 1px solid rgba(255, 255, 255, 0.2);
+            border: 1px solid rgba(155, 93, 229, 0.2);
         }
         
         .analysis-card::before {
@@ -462,7 +552,7 @@
         
         .rounds-slider::-webkit-slider-thumb:hover {
             transform: scale(1.2);
-            box-shadow: 0 0 10px rgba(0, 201, 183, 0.8);
+            box-shadow: 0 0 10px rgba(155, 93, 229, 0.8);
         }
         
         .rounds-label {
@@ -482,7 +572,7 @@
         }
         
         .round-input {
-            background: rgba(0, 201, 183, 0.08);
+            background: rgba(155, 93, 229, 0.08);
             border-radius: 12px;
             padding: 1.2rem;
             transition: all 0.3s ease;
@@ -492,7 +582,7 @@
         
         .round-input:hover {
             transform: translateY(-3px);
-            box-shadow: 0 5px 15px rgba(0, 136, 169, 0.1);
+            box-shadow: 0 5px 15px rgba(123, 44, 191, 0.1);
         }
         
         .round-header {
@@ -500,7 +590,7 @@
             font-weight: 600;
             margin-bottom: 1rem;
             color: var(--secondary);
-            border-bottom: 2px solid rgba(0, 136, 169, 0.2);
+            border-bottom: 2px solid rgba(123, 44, 191, 0.2);
             padding-bottom: 0.5rem;
         }
         
@@ -527,7 +617,7 @@
         
         .input-row select:focus, .input-row input:focus {
             border-color: var(--primary);
-            box-shadow: 0 0 0 3px rgba(0, 201, 183, 0.3);
+            box-shadow: 0 0 0 3px rgba(155, 93, 229, 0.3);
             outline: none;
         }
         
@@ -593,7 +683,7 @@
             transition: all 0.3s ease;
             text-transform: uppercase;
             letter-spacing: 1.5px;
-            box-shadow: 0 5px 15px rgba(0, 136, 169, 0.4);
+            box-shadow: 0 5px 15px rgba(123, 44, 191, 0.4);
             margin-top: 1rem;
             display: flex;
             align-items: center;
@@ -603,14 +693,14 @@
         
         .calculate-btn:hover {
             transform: translateY(-3px);
-            box-shadow: 0 8px 20px rgba(0, 136, 169, 0.6);
+            box-shadow: 0 8px 20px rgba(123, 44, 191, 0.6);
         }
         
         .result {
             margin-top: 2.5rem;
             padding: 2rem;
             border-radius: 16px;
-            background: linear-gradient(135deg, rgba(0, 201, 183, 0.15), rgba(0, 136, 169, 0.15));
+            background: linear-gradient(135deg, rgba(155, 93, 229, 0.15), rgba(123, 44, 191, 0.15));
             display: none;
         }
         
@@ -663,7 +753,7 @@
         
         .tab-btn {
             padding: 10px 20px;
-            background: rgba(0, 201, 183, 0.1);
+            background: rgba(155, 93, 229, 0.1);
             border: 2px solid var(--primary);
             border-radius: 8px;
             font-weight: 600;
@@ -696,7 +786,7 @@
         
         .round-card:hover {
             transform: translateY(-5px);
-            box-shadow: 0 15px 30px rgba(0, 0, 0, 0.15);
+            box-shadow: 0 15px 30px rgba(155, 93, 229, 0.15);
         }
         
         .round-card-header {
@@ -727,7 +817,7 @@
         .resolution-info {
             margin-bottom: 1.5rem;
             padding: 1rem;
-            background: rgba(0, 201, 183, 0.05);
+            background: rgba(155, 93, 229, 0.05);
             border-radius: 8px;
         }
         
@@ -751,7 +841,7 @@
         }
         
         .team-card {
-            background: rgba(0, 201, 183, 0.05);
+            background: rgba(155, 93, 229, 0.05);
             border-radius: 12px;
             padding: 1.2rem;
         }
@@ -782,7 +872,7 @@
         }
         
         .rating-table th {
-            background: rgba(0, 201, 183, 0.1);
+            background: rgba(155, 93, 229, 0.1);
             padding: 12px 15px;
             text-align: left;
             font-weight: 600;
@@ -798,7 +888,7 @@
         }
         
         .rating-table tr:hover {
-            background: rgba(0, 201, 183, 0.05);
+            background: rgba(155, 93, 229, 0.05);
         }
         
         .position-1 {
@@ -835,7 +925,7 @@
         
         .page-btn {
             padding: 8px 15px;
-            background: rgba(0, 201, 183, 0.1);
+            background: rgba(155, 93, 229, 0.1);
             border: 1px solid var(--primary);
             border-radius: 6px;
             cursor: pointer;
@@ -848,7 +938,7 @@
         }
         
         .page-btn:hover:not(.active) {
-            background: rgba(0, 201, 183, 0.2);
+            background: rgba(155, 93, 229, 0.2);
         }
         
         .info-button {
@@ -896,6 +986,11 @@
                 left: -100%;
             }
             
+            .main-menu {
+                padding: 1rem;
+                padding-top: 5rem;
+            }
+            
             .container {
                 padding: 1rem;
                 padding-top: 5rem;
@@ -938,10 +1033,57 @@
                 width: 250px;
                 height: 250px;
             }
+            
+            .menu-card {
+                padding: 1.5rem;
+            }
         }
     </style>
 </head>
 <body>
+    <!-- Главное меню -->
+    <div class="main-menu" id="main-menu">
+        <div class="menu-card" data-section="analysis">
+            <div class="menu-icon">
+                <i class="fas fa-chart-line"></i>
+            </div>
+            <h3 class="menu-title">Анализ результатов</h3>
+            <p class="menu-description">Проанализируйте свой дебатный прогресс и получите рекомендации по улучшению</p>
+        </div>
+        
+        <div class="menu-card" data-section="platforms">
+            <div class="menu-icon">
+                <i class="fas fa-gamepad"></i>
+            </div>
+            <h3 class="menu-title">Площадки для игр</h3>
+            <p class="menu-description">Найдите лучшие площадки для участия в дебатах и тренируйте свои навыки</p>
+        </div>
+        
+        <div class="menu-card" data-section="materials">
+            <div class="menu-icon">
+                <i class="fas fa-book"></i>
+            </div>
+            <h3 class="menu-title">Материалы и лекции</h3>
+            <p class="menu-description">Изучите лучшие материалы для развития дебатных навыков и мастерства</p>
+        </div>
+        
+        <div class="menu-card" data-section="summer-league">
+            <div class="menu-icon">
+                <i class="fas fa-trophy"></i>
+            </div>
+            <h3 class="menu-title">Summer Debate League</h3>
+            <p class="menu-description">Участвуйте в летней лиге дебатов и отслеживайте свои результаты</p>
+        </div>
+        
+        <div class="menu-card" data-section="help">
+            <div class="menu-icon">
+                <i class="fas fa-question-circle"></i>
+            </div>
+            <h3 class="menu-title">Помощь и поддержка</h3>
+            <p class="menu-description">Получите помощь по использованию платформы и ответы на ваши вопросы</p>
+        </div>
+    </div>
+    
     <!-- Боковое меню -->
     <div class="sidebar" id="sidebar">
         <div class="sidebar-header">
@@ -954,7 +1096,10 @@
         <div class="menu-section">
             <div class="menu-title">Основные разделы</div>
             <div class="menu-items">
-                <a href="#" class="menu-item active" data-section="analysis">
+                <a href="#" class="menu-item" data-section="main-menu">
+                    <i class="fas fa-home"></i> Главное меню
+                </a>
+                <a href="#" class="menu-item" data-section="analysis">
                     <i class="fas fa-chart-line"></i> Анализ результатов
                 </a>
                 <a href="#" class="menu-item" data-section="platforms">
@@ -981,7 +1126,7 @@
     <!-- Основной контент -->
     <div class="container" id="container">
         <!-- Секция анализа результатов -->
-        <div class="section active" id="analysis">
+        <div class="section" id="analysis">
             <div class="analysis-card">
                 <h2 class="section-title"><i class="fas fa-user-graduate"></i> Анализ дебатного прогресса</h2>
                 
@@ -1421,6 +1566,41 @@
     </div>
     
     <script>
+    // Главное меню
+    const mainMenu = document.getElementById('main-menu');
+    const menuCards = document.querySelectorAll('.menu-card');
+    
+    menuCards.forEach(card => {
+        card.addEventListener('click', function() {
+            const sectionId = this.getAttribute('data-section');
+            
+            // Показываем контейнер с контентом
+            document.getElementById('container').classList.add('active');
+            
+            // Скрываем главное меню
+            mainMenu.style.display = 'none';
+            
+            // Скрываем все секции
+            document.querySelectorAll('.section').forEach(section => {
+                section.classList.remove('active');
+            });
+            
+            // Показываем выбранную секцию
+            document.getElementById(sectionId).classList.add('active');
+            
+            // Обновляем активный пункт в боковом меню
+            document.querySelectorAll('.menu-item').forEach(item => {
+                item.classList.remove('active');
+                if (item.getAttribute('data-section') === sectionId) {
+                    item.classList.add('active');
+                }
+            });
+            
+            // Плавная прокрутка к верху
+            window.scrollTo({ top: 0, behavior: 'smooth' });
+        });
+    });
+    
     // Управление боковым меню
     const sidebar = document.getElementById('sidebar');
     const menuToggle = document.getElementById('menu-toggle');
@@ -1445,17 +1625,35 @@
         item.addEventListener('click', (e) => {
             e.preventDefault();
             
+            const sectionId = item.getAttribute('data-section');
+            
             // Убираем активный класс у всех пунктов меню
             menuItems.forEach(i => i.classList.remove('active'));
             
             // Добавляем активный класс текущему пункту
             item.classList.add('active');
             
+            // Если выбран главное меню
+            if (sectionId === 'main-menu') {
+                container.classList.remove('active');
+                mainMenu.style.display = 'grid';
+                if (window.innerWidth < 768) {
+                    sidebar.classList.remove('open');
+                    container.classList.remove('sidebar-open');
+                }
+                return;
+            }
+            
+            // Показываем контейнер с контентом
+            container.classList.add('active');
+            
+            // Скрываем главное меню
+            mainMenu.style.display = 'none';
+            
             // Скрываем все секции
             sections.forEach(section => section.classList.remove('active'));
             
             // Показываем выбранную секцию
-            const sectionId = item.getAttribute('data-section');
             document.getElementById(sectionId).classList.add('active');
             
             // Закрываем меню на мобильных устройствах
@@ -1569,8 +1767,8 @@
         ctx.clearRect(0, 0, canvas.width, canvas.height);
         
         // Настройка стилей
-        ctx.strokeStyle = 'rgba(0, 136, 169, 0.3)';
-        ctx.fillStyle = 'rgba(0, 201, 183, 0.2)';
+        ctx.strokeStyle = 'rgba(123, 44, 191, 0.3)';
+        ctx.fillStyle = 'rgba(155, 93, 229, 0.2)';
         ctx.lineWidth = 2;
         ctx.font = 'bold 14px Arial';
         ctx.textAlign = 'center';
@@ -1599,7 +1797,7 @@
         }
         
         // Рисуем линии осей
-        ctx.strokeStyle = 'rgba(0, 136, 169, 0.5)';
+        ctx.strokeStyle = 'rgba(123, 44, 191, 0.5)';
         for (let i = 0; i < 5; i++) {
             const angle = (Math.PI * 2 * i / 5) - (Math.PI / 2);
             ctx.beginPath();
@@ -1613,8 +1811,8 @@
         
         // Рисуем пятиугольник с данными
         ctx.beginPath();
-        ctx.fillStyle = 'rgba(0, 201, 183, 0.5)';
-        ctx.strokeStyle = 'rgba(0, 136, 169, 0.8)';
+        ctx.fillStyle = 'rgba(155, 93, 229, 0.5)';
+        ctx.strokeStyle = 'rgba(123, 44, 191, 0.8)';
         ctx.lineWidth = 3;
         
         for (let i = 0; i < 5; i++) {
@@ -1641,7 +1839,7 @@
         ctx.stroke();
         
         // Добавляем точки на вершины
-        ctx.fillStyle = 'rgba(0, 136, 169, 1)';
+        ctx.fillStyle = 'rgba(123, 44, 191, 1)';
         for (let i = 0; i < 5; i++) {
             const score = scores[i];
             const angle = (Math.PI * 2 * i / 5) - (Math.PI / 2);
@@ -1657,7 +1855,7 @@
             ctx.fillStyle = 'rgba(0, 0, 0, 0.8)';
             ctx.font = 'bold 14px Arial';
             ctx.fillText(`${Math.round(score)}%`, x, y - 20);
-            ctx.fillStyle = 'rgba(0, 136, 169, 1)';
+            ctx.fillStyle = 'rgba(123, 44, 191, 1)';
         }
         
         // Обновляем легенду
@@ -2004,26 +2202,26 @@
             teams: {
                 OP: {
                     speakers: [
-                        { name: "Булекбаев Алихан", points: 0 },
-                        { name: "Майя Аралбаева", points: 0 }
+                        { name: "Павел Тихомиров", points: 77 },
+                        { name: "Туяк Есенжол", points: 77 }
                     ]
                 },
                 OO: {
                     speakers: [
-                        { name: "Туяк Есенжол", points: 0 },
-                        { name: "Павел Тихомиров", points: 0 }
+                        { name: "Орунбаев Эрмек", points: 75 },
+                        { name: "Жуманбеков Алишер", points: 76 }
                     ]
                 },
                 ZP: {
                     speakers: [
-                        { name: "Курносов Егор", points: 0 },
-                        { name: "Валиева Әнел", points: 0 }
+                        { name: "Алия Алишерова", points: 75 },
+                        { name: "Алия Алишерова", points: 75 }
                     ]
                 },
                 ZO: {
                     speakers: [
-                        { name: "Марат Аян", points: 0 },
-                        { name: "Темирхан Жуман", points: 0 }
+                        { name: "Марат Аян", points: 79 },
+                        { name: "Темирхан Жуман", points: 77 }
                     ]
                 }
             }
@@ -2038,26 +2236,26 @@
             teams: {
                 OP: {
                     speakers: [
-                        { name: "Исина Асем", points: 0 },
-                        { name: "Марат Әлихан", points: 0 }
+                        { name: "Исина Асем", points: 76 },
+                        { name: "Марат Әлихан", points: 77 }
                     ]
                 },
                 OO: {
                     speakers: [
-                        { name: "Азат Каппанов", points: 0 },
-                        { name: "Сейдуалиев Еркебулан", points: 0 }
+                        { name: "Сабина Атепилева", points: 74 },
+                        { name: "Рахметуллаева Гаухар", points: 74 }
                     ]
                 },
                 ZP: {
                     speakers: [
-                        { name: "Гончар Надежда", points: 0 },
-                        { name: "Масловский Константин", points: 0 }
+                        { name: "Гончар Надежда", points: 76 },
+                        { name: "Масловский Константин", points: 75 }
                     ]
                 },
                 ZO: {
                     speakers: [
-                        { name: "Орунбаев Эрмек", points: 0 },
-                        { name: "Ескермес Ернур", points: 0 }
+                        { name: "Майя Аралбаева", points: 78 },
+                        { name: "Булекбаев Алихан", points: 77 }
                     ]
                 }
             }
@@ -2072,26 +2270,26 @@
             teams: {
                 OP: {
                     speakers: [
-                        { name: "Жуманбеков Алишер", points: 0 },
-                        { name: "Мухтар Абылайхан", points: 0 }
+                        { name: "Нурсултан Сейпиш", points: 73 },
+                        { name: "Калмурза Аружан", points: 71 }
                     ]
                 },
                 OO: {
                     speakers: [
-                        { name: "Орынтаева Айлин", points: 0 },
-                        { name: "Рома Графский", points: 0 }
+                        { name: "Орынтаева Айлин", points: 75 },
+                        { name: "Рома Графский", points: 76 }
                     ]
                 },
                 ZP: {
                     speakers: [
-                        { name: "Уласхан Талап", points: 0 },
-                        { name: "Калмурза Аружан", points: 0 }
+                        { name: "Нурадыл", points: 74 },
+                        { name: "Нурадыл", points: 73 }
                     ]
                 },
                 ZO: {
                     speakers: [
-                        { name: "Туяк Инкар", points: 0 },
-                        { name: "Иман Алка", points: 0 }
+                        { name: "Мухтар Абылайхан", points: 72 },
+                        { name: "Ескермес Ернур", points: 74 }
                     ]
                 }
             }
