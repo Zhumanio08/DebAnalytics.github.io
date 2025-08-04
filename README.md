@@ -1,1 +1,1 @@
-Damn bro, you really that dumb?
+EZ hack, stay mad. #APALON
